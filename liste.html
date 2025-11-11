@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>ElectroBote – Matériels</title>
+  <style>
+    :root {
+      --bg: #0a0f2c;
+      --primary: #00bfff;
+      --accent: #00ffe1;
+      --text: #e0e0e0;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --shadow: rgba(0, 255, 255, 0.2);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg), #1e2a78);
+      color: var(--text);
+    }
+
+    header {
+      backdrop-filter: blur(10px);
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--accent);
+      box-shadow: 0 8px 20px var(--shadow);
+      border-bottom: 1px solid #ffffff22;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 600;
+      text-shadow: 0 0 10px var(--accent);
+    }
+
+    header button {
+      margin-top: 15px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    header button:hover {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 15px var(--accent);
+      transform: scale(1.05);
+    }
+
+    .materiel-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      padding: 40px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 15px var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px var(--accent);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .card h2 {
+      font-size: 24px;
+      margin: 10px 0;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 8px var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover h2 {
+      transform: scale(1.05);
+    }
+
+    .card p {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .actions button {
+      margin: 5px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .actions button:nth-child(1) {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .actions button:nth-child(2) {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    .actions button:nth-child(3) {
+      background-color: var(--accent);
+      color: #0a0f2c;
+    }
+
+    .actions button:hover {
+      box-shadow: 0 0 10px var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1> Matériels du club ElectroBote</h1>
+    <button onclick="location.href='add.html'">➕ Ajouter un matériel</button>
+  </header>
+
+  <main class="materiel-list" id="materielList"></main>
+
+  <script>
+    const materiels = [
+      {
+        nom: "Arduino Uno",
+        ref: "ARD-UNO-R3",
+        prix: "120",
+        quantite: "5",
+        fournisseur: "ElectroShop",
+        fonction: "Microcontrôleur pour prototypage",
+        etat: "Neuf",
+        emplacement: "Armoire 2",
+        auteur: "Admin",
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/38/Arduino_Uno_-_R3.jpg"
+      },
+      {
+        nom: "Capteur TCS3200",
+        ref: "TCS-3200",
+        prix: "45",
+        quantite: "3",
+        fournisseur: "SensorTech",
+        fonction: "Détection de couleur",
+        etat: "Bon",
+        emplacement: "Boîte 1",
+        auteur: "Admin",
+        image: "https://www.electronicwings.com/public/images/user_images/images/Color%20Sensor%20TCS3200.png"
+      }
+    ];
+
+    function afficherMateriels() {
+      const container = document.getElementById('materielList');
+      container.innerHTML = '';
+
+      materiels.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.image}" alt="${item.nom}">
+          <h2>${item.nom}</h2>
+          <p>Quantité : ${item.quantite}</p>
+          <div class="actions">
+            <button onclick="modifier(${index})">Modifier</button>
+            <button onclick="supprimer(${index})">Supprimer</button>
+            <button onclick="voirDetails(${index})">Détails</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function modifier(index) {
+      alert(`Modifier : ${materiels[index].nom}`);
+    }
+
+    function supprimer(index) {
+      if (confirm(`Supprimer ${materiels[index].nom} ?`)) {
+        materiels.splice(index, 1);
+        afficherMateriels();
+      }
+    }
+
+    function voirDetails(index) {
+      const produit = materiels[index];
+      localStorage.setItem("produitDetails", JSON.stringify(produit));
+      location.href = "details.html";
+    }
+
+    afficherMateriels();
+  </script>
+</body>
+</html>
